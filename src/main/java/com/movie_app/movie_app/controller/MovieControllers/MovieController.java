@@ -21,6 +21,8 @@ import com.movie_app.movie_app.message.ReturnMessageFromApi;
 import com.movie_app.movie_app.model.MovieModels.Movie;
 import com.movie_app.movie_app.service.Movie.MovieService;
 import com.movie_app.movie_app.service.WatchOption.WatchOptionService;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @RequestMapping("/api/movie")
@@ -75,6 +77,19 @@ public class MovieController {
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/get-movie-by-id/{id}")
+    public ResponseEntity<Map<String, Object>> getMovieById(@PathVariable Long id) {
+        try {
+           final Movie response= movieService.getMovieById(id);
+            return ReturnMessageFromApi.returnMessageOnSuccess(true, "Movie fetced successfully", HttpStatus.CREATED,
+            response);
+        } catch (Exception e) {
+            return ReturnMessageFromApi.returnMessageOnError(false, "Failed to fetch movie: " + e,
+                    HttpStatus.NOT_FOUND);
+        }
+    }
+    
 
     @PutMapping("/update/{id}")
     public ResponseEntity<Map<String, Object>> updateMovie(@PathVariable Long id, @RequestBody MovieDTO movieDTO) {
