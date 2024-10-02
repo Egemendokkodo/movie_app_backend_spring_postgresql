@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.movie_app.movie_app.model.MovieModels.Movie;
-import com.movie_app.movie_app.model.TagModels.Tag;
 
 public interface MovieRepository extends JpaRepository<Movie, Long> {
     // Tag ID'lerine göre filmleri döndüren sorgu

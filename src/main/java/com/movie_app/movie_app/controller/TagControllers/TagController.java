@@ -9,16 +9,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
 
 import com.movie_app.movie_app.message.ReturnMessageFromApi;
-import com.movie_app.movie_app.model.MovieModels.Movie;
 import com.movie_app.movie_app.model.TagModels.Tag;
-import com.movie_app.movie_app.service.Movie.MovieService;
 import com.movie_app.movie_app.service.Tag.TagService;
 
 @RestController
