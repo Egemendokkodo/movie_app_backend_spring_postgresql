@@ -15,13 +15,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import com.movie_app.movie_app.DTO.Movie.DeleteMovieRequest;
+
 import com.movie_app.movie_app.DTO.Movie.MovieDTO;
 import com.movie_app.movie_app.message.ReturnMessageFromApi;
 import com.movie_app.movie_app.model.MovieModels.Movie;
 import com.movie_app.movie_app.service.Movie.MovieService;
-import com.movie_app.movie_app.service.WatchOption.WatchOptionService;
-import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 @RestController
@@ -30,12 +29,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class MovieController {
 
     private MovieService movieService;
-    private WatchOptionService watchOptionService;
 
-    public MovieController(MovieService movieService, WatchOptionService watchOptionService) {
+    public MovieController(MovieService movieService) {
         super();
         this.movieService = movieService;
-        this.watchOptionService = watchOptionService;
     }
 
     @GetMapping(path = "/get-all-movies")
@@ -58,16 +55,6 @@ public class MovieController {
 
     @PostMapping("/add-movie")
     public ResponseEntity<Map<String, Object>> addMovie(@RequestBody MovieDTO movieDTO) {
-        /*
-         * Boolean success = movieService.addMovie(movieDTO);
-         * if (Boolean.TRUE.equals(success)) {
-         * return ReturnMessageFromApi.returnMessageOnSuccess(true,
-         * "Movie added successfully", HttpStatus.CREATED, true);
-         * } else {
-         * return ReturnMessageFromApi.returnMessageOnError(false,
-         * "Failed to add movie", HttpStatus.INTERNAL_SERVER_ERROR);
-         * }
-         */
         try {
             movieService.addMovie(movieDTO);
             return ReturnMessageFromApi.returnMessageOnSuccess(true, "Movie added successfully", HttpStatus.CREATED,
@@ -101,5 +88,22 @@ public class MovieController {
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
+    @PostMapping("/delete-movie-by-id")
+    public ResponseEntity<Map<String, Object>> postMethodName(@RequestBody Long id) {
+       
+        final Boolean success=movieService.deleteMovieById(id);
+        if(Boolean.TRUE.equals(success)){
+            return ReturnMessageFromApi.returnMessageOnError(true, "Successfully deleted movie" ,
+            HttpStatus.OK);
+        }
+        else{
+            return ReturnMessageFromApi.returnMessageOnError(false, "Failed to delete movie",
+            HttpStatus.BAD_REQUEST);
+        }
+        
+    }
+    
 
 }

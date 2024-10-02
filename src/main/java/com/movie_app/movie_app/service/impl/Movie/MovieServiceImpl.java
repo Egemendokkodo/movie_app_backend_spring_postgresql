@@ -141,14 +141,6 @@ public class MovieServiceImpl implements MovieService {
         }
     }
     
-    
-    
-    
-    
-    
-    
-
-
     @Override
     public List<Tag> getMovieTagsByMovieId(long id) {
         // Fetch the movie by ID
@@ -165,6 +157,21 @@ public class MovieServiceImpl implements MovieService {
             .orElseThrow(() -> new EntityNotFoundException("Movie not found with id: " + id));
         
         return movie.getWatchOptions();
+    }
+
+    @Override
+    public Boolean deleteMovieById(Long movieId) {
+        
+        try {
+            Movie movie=movieRepository.findById(movieId).orElseThrow(() -> new EntityNotFoundException("Movie not found with id: " + movieId));
+
+        movieRepository.delete(movie);
+        return true;
+        } catch (Exception e) {
+            return false;
+        }
+
+        
     }
 
     

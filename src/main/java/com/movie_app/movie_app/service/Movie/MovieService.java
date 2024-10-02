@@ -17,7 +17,7 @@ public interface MovieService {
     Boolean addMovie(MovieDTO movie);
     List<Tag> getMovieTagsByMovieId(long id);
     List<WatchOption> getMovieWatchOptionsByMovieId(long id);
-
+    Boolean deleteMovieById(Long movieId);
     Boolean updateMovie(Long movieId, MovieDTO movieDTO);
 
 }
