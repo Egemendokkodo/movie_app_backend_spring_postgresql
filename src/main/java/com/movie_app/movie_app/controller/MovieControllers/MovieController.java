@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
 
-
+import com.movie_app.movie_app.DTO.Movie.DeleteMovieRequest;
 import com.movie_app.movie_app.DTO.Movie.MovieDTO;
 import com.movie_app.movie_app.message.ReturnMessageFromApi;
 import com.movie_app.movie_app.model.MovieModels.Movie;
@@ -91,9 +91,9 @@ public class MovieController {
 
 
     @PostMapping("/delete-movie-by-id")
-    public ResponseEntity<Map<String, Object>> postMethodName(@RequestBody Long id) {
+    public ResponseEntity<Map<String, Object>> postMethodName(@RequestBody DeleteMovieRequest request) {
        
-        final Boolean success=movieService.deleteMovieById(id);
+        final Boolean success=movieService.deleteMovieById(request.getId());
         if(Boolean.TRUE.equals(success)){
             return ReturnMessageFromApi.returnMessageOnError(true, "Successfully deleted movie" ,
             HttpStatus.OK);
