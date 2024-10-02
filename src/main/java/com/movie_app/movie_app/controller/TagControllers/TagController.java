@@ -13,9 +13,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import com.movie_app.movie_app.DTO.Movie.TagAddDTO;
 import com.movie_app.movie_app.message.ReturnMessageFromApi;
 import com.movie_app.movie_app.model.TagModels.Tag;
 import com.movie_app.movie_app.service.Tag.TagService;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PostMapping;
+
+
 
 @RestController
 @RequestMapping("/api/tag")
@@ -45,6 +50,20 @@ public class TagController {
                     HttpStatus.NOT_FOUND);
         }
     }
+    @PostMapping("/add-tag")
+    public ResponseEntity<Map<String, Object>> addTag(@RequestBody TagAddDTO tag) {
+        
+        Boolean success=tagService.addTag(tag.getName());
+        if(Boolean.TRUE.equals(success)){
+            return ReturnMessageFromApi.returnMessageOnSuccess(true, "Tag added successfully : "+tag.toString(), HttpStatus.OK, tag);
+        }else{
+            return ReturnMessageFromApi.returnMessageOnError(false, "Cannot add tag : " + tag.toString(),
+            HttpStatus.BAD_REQUEST);
+        }
+        
+       
+    }
+    
 
     
 }
