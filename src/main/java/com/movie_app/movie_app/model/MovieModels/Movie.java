@@ -9,7 +9,6 @@ import com.movie_app.movie_app.model.WatchOptionModels.WatchOption;
 import com.movie_app.movie_app.utils.MovieTypeEnum;
 
 
-import java.util.List;
 
 @Entity
 @Data
@@ -42,4 +41,7 @@ public class Movie {
         inverseJoinColumns = @JoinColumn(name = "watch_option_id") // WatchOption ile ilişkili olan kolon
     )
     private List<WatchOption> watchOptions;
+
+    @OneToOne(mappedBy = "movie", cascade = CascadeType.ALL)
+    private MovieDetails movieDetails;  // Detaylarla ilişki
 }

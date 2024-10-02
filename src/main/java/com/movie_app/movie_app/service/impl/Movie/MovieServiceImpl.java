@@ -14,9 +14,11 @@ import com.movie_app.movie_app.DTO.Movie.WatchOptionDTO;
 import com.movie_app.movie_app.exception.TagNotFoundException;
 import com.movie_app.movie_app.exception.WatchOptionNotFoundException;
 import com.movie_app.movie_app.model.MovieModels.Movie;
+import com.movie_app.movie_app.model.MovieModels.MovieDetails;
 import com.movie_app.movie_app.model.TagModels.Tag;
 import com.movie_app.movie_app.model.WatchOptionModels.WatchOption;
 import com.movie_app.movie_app.repository.Movie.MovieRepository;
+import com.movie_app.movie_app.repository.MovieDetails.MovieDetailsRepository;
 import com.movie_app.movie_app.repository.Tag.TagRepository;
 import com.movie_app.movie_app.repository.WatchOptions.WatchOptionRepository;
 import com.movie_app.movie_app.service.Movie.MovieService;
@@ -30,12 +32,15 @@ public class MovieServiceImpl implements MovieService {
     private TagRepository tagRepository;
     private WatchOptionRepository watchOptionRepository;
 
+    private MovieDetailsRepository movieDetailsRepository;
+
     public MovieServiceImpl(MovieRepository movieRepository, WatchOptionRepository watchOptionRepository,
-            TagRepository tagRepository) {
+            TagRepository tagRepository,MovieDetailsRepository movieDetailsRepository) {
         super();
         this.movieRepository = movieRepository;
         this.watchOptionRepository = watchOptionRepository;
         this.tagRepository = tagRepository;
+        this.movieDetailsRepository=movieDetailsRepository;
 
     }
 
@@ -59,11 +64,13 @@ public class MovieServiceImpl implements MovieService {
     public Boolean addMovie(MovieDTO movieDTO) {
         try {
             Movie movie = new Movie();
+           
             movie.setName(movieDTO.getName());
             movie.setMovieReleaseYear(movieDTO.getMovieReleaseYear());
             movie.setMovieImdbRate(movieDTO.getMovieImdbRate());
             movie.setMovieImage(movieDTO.getMovieImage());
             movie.setType(movieDTO.getType());
+            
 
             List<Tag> tags = new ArrayList<>();
             for (TagDTO tagDTO : movieDTO.getTags()) {
@@ -81,8 +88,21 @@ public class MovieServiceImpl implements MovieService {
                 watchOptions.add(watchOption);
             }
             movie.setWatchOptions(watchOptions);
+            Movie savedMovie = movieRepository.save(movie);
+            if (movieDTO.getMovieDetails() != null) {
+                MovieDetails movieDetails = new MovieDetails();
+                movieDetails.setMovie(savedMovie);  // Kaydedilen Movie'nin ID'si kullanılıyor
+                movieDetails.setDescription(movieDTO.getMovieDetails().getDescription());
+                movieDetails.setMovieLengthInMins(movieDTO.getMovieDetails().getMovieLengthInMins());
+                movieDetails.setMovieReleaseCountry(movieDTO.getMovieDetails().getMovieReleaseCountry());
+                movieDetails.setTotalWatched(movieDTO.getMovieDetails().getTotalWatched());
+                movieDetails.setWebsiteRating(movieDTO.getMovieDetails().getWebsiteRating());
+                movieDetails.setTrailer(movieDTO.getMovieDetails().getTrailer());
+    
+                movieDetailsRepository.save(movieDetails);  // MovieDetails kaydediliyor
+            }
 
-            movieRepository.save(movie);
+            
             return true;
         } catch (TagNotFoundException | WatchOptionNotFoundException e) {
             throw e;

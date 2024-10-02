@@ -2,6 +2,7 @@ package com.movie_app.movie_app.DTO.Movie;
 
 import java.util.List;
 
+import com.movie_app.movie_app.model.MovieModels.MovieDetails;
 import com.movie_app.movie_app.utils.MovieTypeEnum;
 
 import lombok.Data;
@@ -15,4 +16,5 @@ public class MovieDTO {
     private MovieTypeEnum type;
     private List<TagDTO> tags; // Tag için DTO
     private List<WatchOptionDTO> watchOptions; // WatchOption için DTO
+    private MovieDetails movieDetails;
 }
