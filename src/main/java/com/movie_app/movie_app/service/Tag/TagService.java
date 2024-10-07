@@ -9,4 +9,5 @@ public interface TagService {
     List<Tag> getAllTags();
     Tag getTagByTagId (Integer id);
     Boolean addTag(String tagName);
+    Boolean deleteTagById(Integer id);
 }

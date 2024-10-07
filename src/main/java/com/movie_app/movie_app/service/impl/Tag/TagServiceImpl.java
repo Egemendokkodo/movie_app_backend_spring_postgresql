@@ -48,14 +48,32 @@ public class TagServiceImpl implements TagService {
                 
                  return true;
              } catch (Exception e) {
-                 if( tagRepository.findByName(tagName).isPresent()){
-                 throw new RuntimeException("Tag already exists with tag name :"+tagName);
                  
-                }
                  return false;
              }
            }
        
+    }
+    @Override
+    public Boolean deleteTagById(Integer id){
+        if( Boolean.FALSE.equals(tagRepository.findById(id).isPresent())){
+            throw new RuntimeException("Tag does not exists with tag id :"+Integer.toString(id));
+            
+           }else{
+            try {
+
+                tagRepository.deleteById(id);
+           
+     
+                
+                 return true;
+             } catch (Exception e) {
+                 
+                 return false;
+             }
+           }
+
+
     }
 
 }

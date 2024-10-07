@@ -63,7 +63,19 @@ public class TagController {
         
        
     }
-    
+    @PostMapping("/delete-tag-by-id")
+    public ResponseEntity<Map<String, Object>> deleteTag(@RequestBody Integer tagId) {
+
+        Boolean success=tagService.deleteTagById(tagId);
+        if(Boolean.TRUE.equals(success)){
+            return ReturnMessageFromApi.returnMessageOnSuccess(true, "Tag deleted successfully", HttpStatus.OK, Integer.toString(tagId));
+        }else{
+            return ReturnMessageFromApi.returnMessageOnError(false, "Cannot delete tag : " ,
+            HttpStatus.BAD_REQUEST);
+        }
+       
+    }
+     
 
     
 }
