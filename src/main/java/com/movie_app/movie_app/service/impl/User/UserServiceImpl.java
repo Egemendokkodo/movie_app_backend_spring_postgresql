@@ -1,22 +1,23 @@
 package com.movie_app.movie_app.service.impl.User;
 
+import java.util.Optional;
+
 import org.antlr.v4.runtime.InputMismatchException;
 
 import org.springframework.stereotype.Service;
-
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import com.fasterxml.jackson.databind.RuntimeJsonMappingException;
 import com.movie_app.movie_app.DTO.User.LoginUserDTO;
+import com.movie_app.movie_app.DTO.User.UpdateUserDTO;
 import com.movie_app.movie_app.DTO.User.UserDTO;
 import com.movie_app.movie_app.model.User.Token;
 import com.movie_app.movie_app.model.User.User;
 import com.movie_app.movie_app.repository.User.UserRepository;
+import com.movie_app.movie_app.security.JWTUtil;
 import com.movie_app.movie_app.service.User.TokenRepository;
 import com.movie_app.movie_app.service.User.UserService;
-import com.movie_app.movie_app.utils.JWTUtil;
 import com.movie_app.movie_app.utils.UserRegistrationValidator;
 
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 
@@ -25,8 +26,8 @@ public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
     private TokenRepository tokenRepository;
-    private static final String EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
-    private static final Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
+
+    private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public UserServiceImpl(UserRepository userRepository, TokenRepository tokenRepository) {
         super();
@@ -47,7 +48,7 @@ public class UserServiceImpl implements UserService {
             try {
                 User user = new User();
                 user.setName(userDto.getName());
-                user.setPassword(userDto.getPassword());
+                user.setPassword(passwordEncoder.encode(userDto.getPassword()));
                 user.setEmail(userDto.getEmail());
                 user.setSurname(userDto.getSurname());
                 userRepository.save(user);
@@ -80,9 +81,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Boolean updateUser() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateUser'");
+    public Boolean updateUser(UpdateUserDTO updateUserDTO) {
+        return userRepository.findByEmail(updateUserDTO.getEmail())
+                .map(user -> {
+                   
+                    updateUserFields(user, updateUserDTO);
+                    
+                    userRepository.save(user);
+                    return true;
+                })
+                .orElse(false);  
     }
 
     @Override
@@ -90,23 +98,32 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(id).orElseThrow(() -> entityNotFoundException(id));
     }
 
-    private EntityNotFoundException entityNotFoundException(long id) {
-        return new EntityNotFoundException("User not found with id: " + id);
-    }
-
-    private boolean isValidEmail(String email) {
-        Matcher matcher = EMAIL_PATTERN.matcher(email);
-        return matcher.matches();
-    }
+  
 
     @Override
     public User loginUser(LoginUserDTO loginUserDTO) {
-        final Boolean isUserExists = userRepository.findByEmail(loginUserDTO.getEmail()).isPresent();
-        if (Boolean.TRUE.equals(isUserExists)) {
+        Optional<User> user = userRepository.findByEmail(loginUserDTO.getEmail());
+        if (user.isPresent() && passwordEncoder.matches(loginUserDTO.getPassword(), user.get().getPassword())) {
+
             return userRepository.findByEmail(loginUserDTO.getEmail()).get();
-        } else {
-            throw new EntityNotFoundException("User does not exists");
         }
+
+        else {
+            throw new EntityNotFoundException("Invalid credentials.");
+        }
+    }
+
+    private void updateUserFields(User user, UpdateUserDTO dto) {
+        if (dto.getName() != null) {
+            user.setName(dto.getName());
+        }
+        if (dto.getSurname() != null) {
+            user.setSurname(dto.getSurname());
+        }
+    }
+
+    private EntityNotFoundException entityNotFoundException(long id) {
+        return new EntityNotFoundException("User not found with id: " + id);
     }
 
 }

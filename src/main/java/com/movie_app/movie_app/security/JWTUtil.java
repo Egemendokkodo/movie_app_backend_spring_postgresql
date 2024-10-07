@@ -1,4 +1,4 @@
-package com.movie_app.movie_app.utils;
+package com.movie_app.movie_app.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -40,7 +40,7 @@ public class JWTUtil {
     }
 
     // Token süresinin dolup dolmadığını kontrol eder
-    private Boolean isTokenExpired(String token) {
+    public Boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 

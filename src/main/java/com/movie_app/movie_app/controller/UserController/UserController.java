@@ -22,7 +22,7 @@ import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/auth")
 @CrossOrigin
 public class UserController {
     private UserService userService;
