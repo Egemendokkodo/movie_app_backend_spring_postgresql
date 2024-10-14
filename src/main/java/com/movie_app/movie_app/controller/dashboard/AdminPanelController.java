@@ -5,6 +5,7 @@ import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,24 +38,13 @@ public class AdminPanelController {
     public String getAdminLoginPage() {
         return "admin_panel"; 
     }
-
-    @PostMapping("/login-admin")
-    public ResponseEntity<Map<String, Object>> loginAdmin(@RequestBody LoginAdminDTO loginAdminDTO) {
-        try {
-            adminPanelService.loginAdmin(loginAdminDTO);
-            return ReturnMessageFromApi.returnMessageOnSuccess(
-                    true,
-                    "Admin successfully logged in.",
-                    HttpStatus.OK,
-                    true);
-        } catch (EntityNotFoundException e) {
-            return ReturnMessageFromApi.returnMessageOnError(
-                    false,
-                    e.getMessage(),
-                    HttpStatus.BAD_REQUEST
-                    );
-        }
+    @GetMapping("/dashboard")
+    public String getDashboardPage() {
+        return "dashboard"; 
     }
+
+    
+   
 
     @PostMapping("/register-admin")
     public ResponseEntity<Map<String, Object>> registerAdmin(@RequestBody LoginAdminDTO loginAdminDTO) {
@@ -74,6 +64,27 @@ public class AdminPanelController {
         }
         
     }
-    
+    @PostMapping("/login-admin")
+    public String login(@RequestParam String username, @RequestParam String password,Model model) {
+        LoginAdminDTO loginAdminDTO=new LoginAdminDTO();
+        loginAdminDTO.setUserName(username);
+        loginAdminDTO.setPassword(password);
+
+        if (authenticate(loginAdminDTO)) {
+            return "redirect:"+getDashboardPage();
+        }
+            
+        model.addAttribute("error", "Invalid username or password");
+        return "admin_panel";
+    }
+
+    public boolean authenticate(@RequestBody LoginAdminDTO loginAdminDTO) {
+        try {
+            adminPanelService.loginAdmin(loginAdminDTO);
+            return true;
+        } catch (EntityNotFoundException e) {
+            return false;
+        }
+    }
 
 }

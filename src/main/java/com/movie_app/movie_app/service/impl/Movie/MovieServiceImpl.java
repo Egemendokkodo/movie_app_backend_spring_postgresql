@@ -107,7 +107,7 @@ public class MovieServiceImpl implements MovieService {
         } catch (TagNotFoundException | WatchOptionNotFoundException e) {
             throw e;
         } catch (Exception e) {
-            throw runtimeException();
+            throw new RuntimeException("asd"+e.getMessage());
         }
     }
 

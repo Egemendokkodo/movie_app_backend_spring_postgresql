@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie App</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
+
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <ul>
+            <li><a href="#" onclick="showSection('add-movie')">Add Movie</a></li>
+            <li><a href="#" onclick="showSection('delete-movie')">Delete Movie</a></li>
+        </ul>
+    </nav>
+
+    <div class="content">
+        <div id="add-movie" class="section active">
+            <h1>Add Movie</h1>
+            <form id="addMovieForm" action="#" method="post" onsubmit="handleFormSubmit(event)">
+                <label for="movieName">Movie Name:</label><br>
+                <input type="text" id="movieName" name="movieName" required><br><br>
+                <label for="movieImage">Movie Image Url:</label><br>
+                <input type="text" id="movieImage" name="movieImage"><br><br>
+
+                <label for="movieImdbRate">Movie Imdb Rate:</label><br>
+                <input type="number" id="movieImdbRate" name="movieImdbRate" min="0" max="10" step="0.1"
+                    required><br><br>
+
+                <label for="movieType">Is it movie or series?</label><br>
+                <input type="text" id="movieType" name="movieType" required><br><br>
+
+                <label for="releaseYear">Release Year:</label><br>
+                <input type="number" id="releaseYear" name="releaseYear" required><br><br>
+
+                <label for="movieTags">Tags:</label><br>
+                <select id="movieTags" name="movieTags" size="5" required>
+                    <!-- Tag'ler burada dinamik olarak yüklenecek -->
+                </select><br><br>
+
+                <h3>Movie Details</h3>
+
+                <label for="movieDescription">Description:</label><br>
+                <input type="text" id="movieDescription" name="movieDescription" required><br><br>
+
+                <label for="movieLength">Movie Length(mins):</label><br>
+                <input type="number" id="movieLength" name="movieLength" required><br><br>
+
+                <label for="movieReleaseCountry">Movie Release Country:</label><br>
+                <input type="text" id="movieReleaseCountry" name="movieReleaseCountry" required><br><br>
+
+                <label for="movieTrailerLink">Movie Trailer Link:</label><br>
+                <input type="text" id="movieTrailerLink" name="movieTrailerLink"><br><br>
+
+                <button type="submit">Add Movie</button>
+            </form>
+        </div>
+
+        <div id="delete-movie" class="section">
+            <h1>Delete Movie</h1>
+            <form action="#" method="post">
+                <label for="movieId">Movie ID:</label><br>
+                <input type="text" id="movieId" name="movieId" required><br><br>
+                <button type="submit">Delete Movie</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function showSection(sectionId) {
+            var sections = document.querySelectorAll('.section');
+            sections.forEach(function (section) {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+        }
+
+        async function fetchTags() {
+            try {
+                const response = await fetch('http://localhost:8080/api/tag/get-all-tags');
+                const data = await response.json(); // Tüm yanıtı al
+                console.log(data); // Yanıtı kontrol etmek için konsola yazdır
+
+                // response anahtarını kullanarak etiketleri al
+                const tags = data.response;
+
+                // Eğer tags bir dizi değilse hata ver
+                if (!Array.isArray(tags)) {
+                    console.error('Tags is not an array:', tags);
+                    return;
+                }
+
+                const selectElement = document.getElementById('movieTags');
+                selectElement.innerHTML = ''; // Mevcut seçenekleri temizle
+
+                tags.forEach(tag => {
+                    const option = document.createElement('option');
+                    option.value = tag.tagId;  // tagId kullanarak değeri belirleyin
+                    option.textContent = tag.name;  // tag adını göster
+                    selectElement.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error fetching tags:', error);
+            }
+        }
+
+        // Seçim işlemini yönet
+        document.getElementById('movieTags').addEventListener('click', function (event) {
+            if (event.target.tagName === 'OPTION') {
+                event.target.classList.toggle('selected'); // Seçili durumunu değiştir
+            }
+        });
+
+        function handleFormSubmit(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            // Gather form data
+            const formData = new FormData(event.target);
+            const movieData = {
+                name: formData.get('movieName'),
+                movieImage: formData.get('movieImage'),
+                movieReleaseYear: parseInt(formData.get('releaseYear')),
+                movieImdbRate: parseFloat(formData.get('movieImdbRate')),
+                type: formData.get('movieType'),
+                tags: [],
+                watchOptions: [
+                 {watchOptionId: 1,name : "Türkçe Dublaj"}
+               
+                ],
+                movieDetails: {
+                    description: formData.get('movieDescription'),
+                    movieLengthInMins: parseInt(formData.get('movieLength')),
+                    movieReleaseCountry: formData.get('movieReleaseCountry'),
+                    totalWatched: 0, // Default value
+                    websiteRating: 0, // Default value
+                    trailer: formData.get('movieTrailerLink')
+                }
+            };
+
+            // Get selected tags
+            const selectedOptions = [...document.getElementById('movieTags').options]
+                .filter(option => option.classList.contains('selected'));
+            selectedOptions.forEach(option => {
+                movieData.tags.push({
+                    tagId: parseInt(option.value),
+                    name: option.textContent // Get tag name here
+                });
+            });
+
+            // Post data to the API
+            fetch('http://localhost:8080/api/movie/add-movie', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(movieData)
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to add movie.');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Handle success
+                    console.log('Movie added successfully:', data);
+                    alert('Movie added successfully!');
+                })
+                .catch(error => {
+                    // Handle error
+                    console.error('Error:', error);
+                    alert('Failed to add movie.');
+                });
+        }
+
+
+        // Sayfa yüklendiğinde tagleri çek
+        window.onload = function () {
+            fetchTags();
+        }
+    </script>
+
+</body>
+
+</html>

@@ -17,7 +17,8 @@ public class ReturnMessageFromApi {
 
     public static ResponseEntity<Map<String, Object>> returnMessageOnSuccess(Boolean success,String message,HttpStatus status,Object response){
         Map<String, Object> r = new HashMap<>();
-        r.put("success", success);
+        
+        r.put("success", success);       
         r.put("message", message);
         if(response instanceof List<?>){
             List<?> responseList = (List<?>) response;

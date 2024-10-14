@@ -38,7 +38,7 @@ public class MovieController {
     @GetMapping(path = "/get-all-movies")
     public ResponseEntity<Map<String, Object>> getAllMovies() {
         List<Movie> movies = movieService.getAllMovies();
-        return ReturnMessageFromApi.returnMessageOnSuccess(true, "true", HttpStatus.OK, movies);
+        return ReturnMessageFromApi.returnMessageOnSuccess(true, "Movies fetched successfully.", HttpStatus.OK, movies);
     }
 
     @PostMapping("/get-movies-by-tag-id")

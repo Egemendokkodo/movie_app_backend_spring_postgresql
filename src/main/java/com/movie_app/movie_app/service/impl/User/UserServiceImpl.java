@@ -75,7 +75,7 @@ public class UserServiceImpl implements UserService {
             userRepository.deleteById(id);
             return true;
         } else {
-            throw new EntityNotFoundException("User already exists");
+            throw new EntityNotFoundException("User does not exists");
         }
 
     }

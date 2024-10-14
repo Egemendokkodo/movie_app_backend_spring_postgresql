@@ -10,7 +10,7 @@ public class UserRegistrationValidator {
 
     public void validate(UserDTO userDto) {
         if (Boolean.FALSE.equals(userDto.getPassword().equals(userDto.getRePassword()))) {
-            throw new RuntimeException("Password and Re-Password do not match.");
+            throw new RuntimeException("Passwords does not match.");
         } else if (!isValidEmail(userDto.getEmail())) {
             throw new IllegalArgumentException("Invalid email format.");
         } else if (userDto.getName().isEmpty()) {

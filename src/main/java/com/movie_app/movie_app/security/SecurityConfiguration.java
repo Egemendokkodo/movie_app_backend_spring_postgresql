@@ -13,16 +13,12 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class SecurityConfiguration {
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-            .cors().and() // Enable CORS
-            .csrf().disable()
-            .authorizeHttpRequests()
-                .requestMatchers("/api/**", "/movie-app/admin-panel","/movie-app/**").permitAll()
-                .requestMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**", "/templates/**").permitAll() // Permit static resources
-                .anyRequest().authenticated();
+    SecurityFilterChain configure(HttpSecurity http) throws Exception {
+         
+        http.authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
+        http.csrf().disable(); // remove this
         return http.build();
-    }
+    }  
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
