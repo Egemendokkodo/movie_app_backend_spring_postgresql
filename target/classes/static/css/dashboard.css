@@ -43,7 +43,34 @@ body {
     padding: 5px;
     cursor: pointer;
 }
+#watchOptions{
+    width: 100%;
+    height: 100px; /* Dropdown yüksekliğini artır */
+    overflow-y: auto; /* Aşırı içerik için kaydırma çubuğu ekle */
+    border: 1px solid #ccc;
+    padding: 5px;
+    cursor: pointer;
+}
 #movieTags option.selected {
+    background-color: #007bff;
+    color: white;
+}
+
+.sectionWatchOptions {
+    display: none;
+}
+.sectionWatchOptions.active {
+    display: block;
+}
+#sectionWatchOptions {
+    width: 100%;
+    height: 100px; /* Dropdown yüksekliğini artır */
+    overflow-y: auto; /* Aşırı içerik için kaydırma çubuğu ekle */
+    border: 1px solid #ccc;
+    padding: 5px;
+    cursor: pointer;
+}
+#sectionWatchOptions option.selected {
     background-color: #007bff;
     color: white;
 }

@@ -32,7 +32,7 @@
                 <input type="number" id="movieImdbRate" name="movieImdbRate" min="0" max="10" step="0.1"
                     required><br><br>
 
-                <label for="movieType">Is it movie or series?</label><br>
+                <label for="movieType">Is it movie or series? (MOVIE, SERIES)</label><br>
                 <input type="text" id="movieType" name="movieType" required><br><br>
 
                 <label for="releaseYear">Release Year:</label><br>
@@ -41,6 +41,12 @@
                 <label for="movieTags">Tags:</label><br>
                 <select id="movieTags" name="movieTags" size="5" required>
                     <!-- Tag'ler burada dinamik olarak yüklenecek -->
+                </select><br><br>
+
+
+                <label for="watchOptions">Watch Options:</label><br>
+                <select id="watchOptions" name="watchOptions" size="3" required>
+                    <!-- watcOptions'lar burada dinamik olarak yüklenecek -->
                 </select><br><br>
 
                 <h3>Movie Details</h3>
@@ -61,7 +67,7 @@
             </form>
         </div>
 
-        <div id="delete-movie" class="section">
+        <div id="delete-movie" class="section" action="#" method="post" onsubmit="handleDelete(event)">
             <h1>Delete Movie</h1>
             <form action="#" method="post">
                 <label for="movieId">Movie ID:</label><br>
@@ -78,9 +84,18 @@
                 section.classList.remove('active');
             });
             document.getElementById(sectionId).classList.add('active');
+            showSectionForMovieWatchOptions(sectionId);
         }
 
-        async function fetchTags() {
+        function showSectionForMovieWatchOptions(sectionId) {
+            var sections = document.querySelectorAll('.sectionWatchOptions');
+            sections.forEach(function (section) {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+        }
+
+        async function fetchTags() { 
             try {
                 const response = await fetch('http://localhost:8080/api/tag/get-all-tags');
                 const data = await response.json(); // Tüm yanıtı al
@@ -109,13 +124,48 @@
             }
         }
 
+        async function fetchWatchOptions() { 
+            try {
+                const response = await fetch('http://localhost:8080/api/watch-option/get-all-watch-options');
+                const data = await response.json(); // Tüm yanıtı al
+                console.log(data); // Yanıtı kontrol etmek için konsola yazdır
+
+                // response anahtarını kullanarak etiketleri al
+                const watchOptions = data.response;
+
+                // Eğer tags bir dizi değilse hata ver
+                if (!Array.isArray(watchOptions)) {
+                    
+                    console.error('watchOptions is not an array:', watchOptions);
+                    return;
+                }
+
+                const selectElement = document.getElementById('watchOptions');
+                selectElement.innerHTML = ''; // Mevcut seçenekleri temizle
+
+                watchOptions.forEach(watchOption => {
+                    const option = document.createElement('option');
+                    option.value = watchOption.watchOptionId;  // tagId kullanarak değeri belirleyin
+                    option.textContent =watchOption.name;  // tag adını göster
+                    selectElement.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error fetching watchOptions:', error);
+            }
+        }
+
+
         // Seçim işlemini yönet
+        document.getElementById('watchOptions').addEventListener('click', function (event) {
+            if (event.target.tagName === 'OPTION') {
+                event.target.classList.toggle('selected'); // Seçili durumunu değiştir
+            }
+        });
         document.getElementById('movieTags').addEventListener('click', function (event) {
             if (event.target.tagName === 'OPTION') {
                 event.target.classList.toggle('selected'); // Seçili durumunu değiştir
             }
         });
-
         function handleFormSubmit(event) {
             event.preventDefault(); // Prevent default form submission
 
@@ -128,10 +178,7 @@
                 movieImdbRate: parseFloat(formData.get('movieImdbRate')),
                 type: formData.get('movieType'),
                 tags: [],
-                watchOptions: [
-                 {watchOptionId: 1,name : "Türkçe Dublaj"}
-               
-                ],
+                watchOptions: [],
                 movieDetails: {
                     description: formData.get('movieDescription'),
                     movieLengthInMins: parseInt(formData.get('movieLength')),
@@ -149,6 +196,14 @@
                 movieData.tags.push({
                     tagId: parseInt(option.value),
                     name: option.textContent // Get tag name here
+                });
+            });
+            const selectedOptionsForWatcOptions = [...document.getElementById('watchOptions').options]
+                .filter(option => option.classList.contains('selected'));
+                selectedOptionsForWatcOptions.forEach(option => {
+                movieData.watchOptions.push({
+                    watchOptionId: parseInt(option.value),
+                    name: option.textContent // Get watchOptions name here
                 });
             });
 
@@ -178,10 +233,49 @@
                 });
         }
 
+        function handleDelete(event){
+            event.preventDefault();
+
+            const formData = new FormData(event.target);
+
+            const movieId={
+                "id":formData.get("movieId")
+            }
+
+            fetch('http://localhost:8080/api/movie/delete-movie-by-id', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(movieId)
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to delete movie.');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Handle success
+                    console.log('Movie delete successfully:', data);
+                    alert('Movie delete successfully!');
+                })
+                .catch(error => {
+                    // Handle error
+                    console.error('Error:', error);
+                    alert('Failed to delete movie.');
+                });
+
+
+
+
+        }
+
 
         // Sayfa yüklendiğinde tagleri çek
         window.onload = function () {
             fetchTags();
+            fetchWatchOptions();
         }
     </script>
 
