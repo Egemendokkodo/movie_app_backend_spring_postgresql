@@ -195,7 +195,7 @@
             selectedOptions.forEach(option => {
                 movieData.tags.push({
                     tagId: parseInt(option.value),
-                    name: option.textContent // Get tag name here
+                    name: option.textContent 
                 });
             });
             const selectedOptionsForWatcOptions = [...document.getElementById('watchOptions').options]
@@ -203,7 +203,7 @@
                 selectedOptionsForWatcOptions.forEach(option => {
                 movieData.watchOptions.push({
                     watchOptionId: parseInt(option.value),
-                    name: option.textContent // Get watchOptions name here
+                    name: option.textContent 
                 });
             });
 

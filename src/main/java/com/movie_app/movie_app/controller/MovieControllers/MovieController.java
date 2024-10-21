@@ -1,8 +1,10 @@
 package com.movie_app.movie_app.controller.MovieControllers;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -12,7 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.movie_app.movie_app.DTO.Movie.DeleteMovieRequest;
@@ -35,11 +37,18 @@ public class MovieController {
         this.movieService = movieService;
     }
 
-    @GetMapping(path = "/get-all-movies")
-    public ResponseEntity<Map<String, Object>> getAllMovies() {
-        List<Movie> movies = movieService.getAllMovies();
-        return ReturnMessageFromApi.returnMessageOnSuccess(true, "Movies fetched successfully.", HttpStatus.OK, movies);
-    }
+@GetMapping(path = "/get-all-movies")
+public ResponseEntity<Map<String, Object>> getAllMovies(
+        @RequestParam(defaultValue = "0") int page, 
+        @RequestParam(defaultValue = "12") int size) { 
+    Page<Movie> movies = movieService.getAllMovies(page, size);
+    Map<String, Object> response = new HashMap<>();
+    response.put("movies", movies.getContent()); // Filmler
+    response.put("currentPage", movies.getNumber()); // Mevcut sayfa
+    response.put("totalItems", movies.getTotalElements()); // Toplam film sayısı
+    response.put("totalPages", movies.getTotalPages()); // Toplam sayfa sayısı
+    return ReturnMessageFromApi.returnMessageOnSuccess(true, "Movies fetched successfully.", HttpStatus.OK, response);
+}
 
     @PostMapping("/get-movies-by-tag-id")
     public ResponseEntity<Map<String, Object>> getMoviesByTagId(@RequestBody List<Integer> tagIds) {

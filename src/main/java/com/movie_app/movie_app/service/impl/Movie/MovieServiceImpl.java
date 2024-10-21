@@ -6,6 +6,9 @@ import java.util.stream.Collectors;
 
 import java.util.Optional;
 
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.movie_app.movie_app.DTO.Movie.MovieDTO;
@@ -44,10 +47,12 @@ public class MovieServiceImpl implements MovieService {
 
     }
 
-    @Override
-    public List<Movie> getAllMovies() {
-        return movieRepository.findAll();
-    }
+@Override
+public Page<Movie> getAllMovies(int page, int size) {
+
+    PageRequest paging = PageRequest.of(page, size);
+    return movieRepository.findAll(paging);
+}
 
     @Override
     public List<Movie> getMoviesByTagId(List<Integer> tagIds) {
@@ -107,7 +112,7 @@ public class MovieServiceImpl implements MovieService {
         } catch (TagNotFoundException | WatchOptionNotFoundException e) {
             throw e;
         } catch (Exception e) {
-            throw new RuntimeException("asd"+e.getMessage());
+            throw new RuntimeException(e.getMessage());
         }
     }
 
