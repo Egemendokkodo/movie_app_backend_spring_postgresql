@@ -50,17 +50,27 @@ public ResponseEntity<Map<String, Object>> getAllMovies(
     return ReturnMessageFromApi.returnMessageOnSuccess(true, "Movies fetched successfully.", HttpStatus.OK, response);
 }
 
-    @PostMapping("/get-movies-by-tag-id")
-    public ResponseEntity<Map<String, Object>> getMoviesByTagId(@RequestBody List<Integer> tagIds) {
-        List<Movie> movies = movieService.getMoviesByTagId(tagIds);
-        if (!movies.isEmpty()) {
-            return ReturnMessageFromApi.returnMessageOnSuccess(true, "Movies fetched successfully", HttpStatus.OK,
-                    movies);
-        } else {
-            return ReturnMessageFromApi.returnMessageOnError(false, "Movies not found with id list:" + tagIds,
-                    HttpStatus.NOT_FOUND);
-        }
+@PostMapping("/get-movies-by-tag-id")
+public ResponseEntity<Map<String, Object>> getMoviesByTagId(
+        @RequestBody List<Integer> tagIds,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "20") int size) {
+    
+    Page<Movie> moviesPage = movieService.getMoviesByTagId(tagIds, page, size);
+    List<Movie> movies = moviesPage.getContent();
+    
+    if (!movies.isEmpty()) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("movies", movies);
+        response.put("currentPage", moviesPage.getNumber());
+        response.put("totalItems", moviesPage.getTotalElements());
+        response.put("totalPages", moviesPage.getTotalPages());
+        
+        return ReturnMessageFromApi.returnMessageOnSuccess(true, "Movies fetched successfully", HttpStatus.OK, response);
+    } else {
+        return ReturnMessageFromApi.returnMessageOnError(false, "Movies not found with id list:" + tagIds, HttpStatus.NOT_FOUND);
     }
+}
 
     @PostMapping("/add-movie")
     public ResponseEntity<Map<String, Object>> addMovie(@RequestBody MovieDTO movieDTO) {

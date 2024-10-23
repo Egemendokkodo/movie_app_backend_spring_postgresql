@@ -14,7 +14,7 @@ import com.movie_app.movie_app.model.WatchOptionModels.WatchOption;
 public interface MovieService {
      Page<Movie> getAllMovies(int page, int size);
     Movie getMovieById(long id);
-    List<Movie> getMoviesByTagId(List<Integer> tagIds);
+    Page<Movie> getMoviesByTagId(List<Integer> tagIds, int page, int size);
     Boolean addMovie(MovieDTO movie);
     List<Tag> getMovieTagsByMovieId(long id);
     List<WatchOption> getMovieWatchOptionsByMovieId(long id);

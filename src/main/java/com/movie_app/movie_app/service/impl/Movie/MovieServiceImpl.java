@@ -54,10 +54,11 @@ public Page<Movie> getAllMovies(int page, int size) {
     return movieRepository.findAll(paging);
 }
 
-    @Override
-    public List<Movie> getMoviesByTagId(List<Integer> tagIds) {
-        return movieRepository.findMoviesByTagIds(tagIds);
-    }
+@Override
+public Page<Movie> getMoviesByTagId(List<Integer> tagIds, int page, int size) {
+    PageRequest pageable = PageRequest.of(page, size);
+    return movieRepository.findMoviesByTagIds(tagIds, pageable);
+}
 
     @Override
     public Movie getMovieById(long id) {
