@@ -11,7 +11,12 @@ import org.springframework.data.repository.query.Param;
 import com.movie_app.movie_app.model.MovieModels.Movie;
 
 public interface MovieRepository extends JpaRepository<Movie, Long> {
-    // Tag ID'lerine göre filmleri döndüren ve sayfalama desteği sağlayan sorgu
-    @Query("SELECT m FROM Movie m JOIN m.tags t WHERE t.tagId IN :tagIds")
+    
+    @Query("SELECT m FROM Movie m JOIN m.tags t WHERE t.tagId IN :tagIds ")
     Page<Movie> findMoviesByTagIds(@Param("tagIds") List<Integer> tagIds, Pageable pageable);
+
+
+    @Query("SELECT m FROM Movie m WHERE m.movieReleaseYear = :year")
+    Page<Movie> findMoviesByYear(@Param("year") int year, Pageable pageable);
+    
 }

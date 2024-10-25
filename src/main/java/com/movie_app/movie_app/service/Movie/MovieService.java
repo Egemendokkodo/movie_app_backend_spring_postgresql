@@ -15,6 +15,7 @@ public interface MovieService {
      Page<Movie> getAllMovies(int page, int size);
     Movie getMovieById(long id);
     Page<Movie> getMoviesByTagId(List<Integer> tagIds, int page, int size);
+    Page<Movie> getMoviesByYear(int page, int size,int year);
     Boolean addMovie(MovieDTO movie);
     List<Tag> getMovieTagsByMovieId(long id);
     List<WatchOption> getMovieWatchOptionsByMovieId(long id);

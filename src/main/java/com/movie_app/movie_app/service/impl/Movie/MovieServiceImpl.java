@@ -198,4 +198,10 @@ public Page<Movie> getMoviesByTagId(List<Integer> tagIds, int page, int size) {
         return new EntityNotFoundException("Movie not found ");
     }
 
+    @Override
+    public Page<Movie> getMoviesByYear(int page, int size,int year) {
+        PageRequest pageable=PageRequest.of(page, size);
+        return  movieRepository.findMoviesByYear(year,pageable);
+    }
+
 }
