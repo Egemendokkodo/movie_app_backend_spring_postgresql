@@ -25,7 +25,7 @@ import com.movie_app.movie_app.service.Movie.MovieService;
 
 @RestController
 @RequestMapping("/api/movie")
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:3000")
 public class MovieController {
 
     private MovieService movieService;
@@ -140,5 +140,20 @@ public class MovieController {
             HttpStatus.BAD_REQUEST);
         }
     }
-
+    @PostMapping("/{movieId}/watch")
+    public ResponseEntity<Boolean> watchMovie(
+            @PathVariable Long movieId,
+            @RequestParam Long userId) {
+        
+        boolean incremented = movieService.incrementMovieWatchCount(userId, movieId);
+        
+        if (incremented) {
+            return ResponseEntity.ok(true); // HTTP 200 OK ve true değeri
+        } else {
+            return ResponseEntity.ok(false); // HTTP 200 OK ve false değeri
+        }
+    }
+    
 }
+
+

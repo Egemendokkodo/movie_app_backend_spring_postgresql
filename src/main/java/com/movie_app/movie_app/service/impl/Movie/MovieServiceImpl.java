@@ -18,15 +18,18 @@ import com.movie_app.movie_app.exception.TagNotFoundException;
 import com.movie_app.movie_app.exception.WatchOptionNotFoundException;
 import com.movie_app.movie_app.model.MovieModels.Movie;
 import com.movie_app.movie_app.model.MovieModels.MovieDetails;
+import com.movie_app.movie_app.model.MovieModels.UserWatchHistory;
 import com.movie_app.movie_app.model.TagModels.Tag;
 import com.movie_app.movie_app.model.WatchOptionModels.WatchOption;
 import com.movie_app.movie_app.repository.Movie.MovieDetailsRepository;
 import com.movie_app.movie_app.repository.Movie.MovieRepository;
+import com.movie_app.movie_app.repository.Movie.UserWatchHistoryRepository;
 import com.movie_app.movie_app.repository.Tag.TagRepository;
 import com.movie_app.movie_app.repository.WatchOptions.WatchOptionRepository;
 import com.movie_app.movie_app.service.Movie.MovieService;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 
 @Service
 public class MovieServiceImpl implements MovieService {
@@ -36,15 +39,19 @@ public class MovieServiceImpl implements MovieService {
     private WatchOptionRepository watchOptionRepository;
 
     private MovieDetailsRepository movieDetailsRepository;
+    private UserWatchHistoryRepository userWatchHistoryRepository;
 
-    public MovieServiceImpl(MovieRepository movieRepository, WatchOptionRepository watchOptionRepository,
-            TagRepository tagRepository,MovieDetailsRepository movieDetailsRepository) {
+    public MovieServiceImpl(MovieRepository movieRepository, 
+                           WatchOptionRepository watchOptionRepository,
+                           TagRepository tagRepository,
+                           MovieDetailsRepository movieDetailsRepository,
+                           UserWatchHistoryRepository userWatchHistoryRepository) {
         super();
         this.movieRepository = movieRepository;
         this.watchOptionRepository = watchOptionRepository;
         this.tagRepository = tagRepository;
-        this.movieDetailsRepository=movieDetailsRepository;
-
+        this.movieDetailsRepository = movieDetailsRepository;
+        this.userWatchHistoryRepository = userWatchHistoryRepository;
     }
 
 @Override
@@ -202,6 +209,31 @@ public Page<Movie> getMoviesByTagId(List<Integer> tagIds, int page, int size) {
     public Page<Movie> getMoviesByYear(int page, int size,int year) {
         PageRequest pageable=PageRequest.of(page, size);
         return  movieRepository.findMoviesByYear(year,pageable);
+    }
+
+    @Override
+    @Transactional
+    public boolean incrementMovieWatchCount(Long userId, Long movieId) {
+        // Kullanıcının bu filmi daha önce izleyip izlemediğini kontrol et
+        boolean hasWatchedBefore = userWatchHistoryRepository.existsByUserIdAndMovieId(userId, movieId);
+        
+        if (!hasWatchedBefore) {
+            // Filmi detaylarını bul
+            MovieDetails movieDetails = movieDetailsRepository.findById(movieId)
+                .orElseThrow(() -> new RuntimeException("Film bulunamadı: " + movieId));
+            
+            // İzlenme sayısını artır
+            movieDetails.setTotalWatched(movieDetails.getTotalWatched() + 1);
+            movieDetailsRepository.save(movieDetails);
+            
+            // Kullanıcı izleme kaydını ekle
+            UserWatchHistory watchHistory = new UserWatchHistory(userId, movieId);
+            userWatchHistoryRepository.save(watchHistory);
+            
+            return true;
+        }
+        
+        return false; // Daha önce izlenmiş, sayaç artırılmadı
     }
 
 }

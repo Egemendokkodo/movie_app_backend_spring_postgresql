@@ -21,5 +21,6 @@ public interface MovieService {
     List<WatchOption> getMovieWatchOptionsByMovieId(long id);
     Boolean deleteMovieById(Long movieId);
     Boolean updateMovie(Long movieId, MovieDTO movieDTO);
+    boolean incrementMovieWatchCount(Long userId, Long movieId);
 
 }
