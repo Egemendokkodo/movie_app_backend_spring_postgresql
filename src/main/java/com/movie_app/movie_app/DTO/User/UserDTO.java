@@ -9,4 +9,5 @@ public class UserDTO {
     String rePassword;
     String name;
     String surname;
+    String userName;
 }

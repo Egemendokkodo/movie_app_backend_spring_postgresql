@@ -51,10 +51,12 @@ public class UserServiceImpl implements UserService {
                 user.setPassword(passwordEncoder.encode(userDto.getPassword()));
                 user.setEmail(userDto.getEmail());
                 user.setSurname(userDto.getSurname());
+                user.setUsername(userDto.getUserName());
                 userRepository.save(user);
 
                 JWTUtil jwtUtil = new JWTUtil();
                 String tokenValue = jwtUtil.generateToken(user.getEmail());
+                System.out.println("kaydedilen username :: "+userDto.getUserName());
 
                 Token token = new Token();
                 token.setToken(tokenValue);

@@ -28,6 +28,7 @@ public class User {
     private String name;
     private String surname;
     private String password;
+    private String username;
 
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
