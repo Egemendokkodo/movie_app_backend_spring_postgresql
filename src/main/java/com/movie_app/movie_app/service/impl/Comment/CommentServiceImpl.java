@@ -25,23 +25,32 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public Comment addComment(CommentRequestDTO dto) {
-               Comment comment = new Comment();
+        Comment comment = new Comment();
         comment.setUsername(dto.getUsername());
         comment.setContent(dto.getContent());
         comment.setContainsSpoiler(dto.isContainsSpoiler());
-
+    
         Movie movie = movieRepository.findById(dto.getMovieId())
                 .orElseThrow(() -> new RuntimeException("Movie not found"));
         comment.setMovie(movie);
-
+    
         if (dto.getParentId() != null) {
             Comment parent = commentRepository.findById(dto.getParentId())
                     .orElseThrow(() -> new RuntimeException("Parent comment not found"));
             comment.setParent(parent);
         }
-
-        return commentRepository.save(comment);
+        
+    
+        Comment saved = commentRepository.save(comment);
+    
+        // Yorum sayısını güncelle
+        long count = commentRepository.countByMovie_MovieId(dto.getMovieId());
+        movie.setMovieTotalCommentCount(count);
+        movieRepository.save(movie);
+    
+        return saved;
     }
+    
 
     @Override
     public List<CommentResponseDTO> getCommentsForMovie(Long movieId) {
