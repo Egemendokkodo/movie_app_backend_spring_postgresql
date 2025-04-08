@@ -1,4 +1,4 @@
-package com.movie_app.movie_app.model.MovieModels;
+package com.movie_app.movie_app.entity.MovieModels;
 
 import jakarta.persistence.*;
 import lombok.Data;

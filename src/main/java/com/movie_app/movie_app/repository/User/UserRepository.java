@@ -4,8 +4,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import com.movie_app.movie_app.entity.User.User;
+
 import java.util.Optional;
-import com.movie_app.movie_app.model.User.User;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 

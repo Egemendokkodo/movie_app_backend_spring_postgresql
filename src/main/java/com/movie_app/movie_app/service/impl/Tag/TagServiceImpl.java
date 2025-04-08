@@ -4,8 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-
-import com.movie_app.movie_app.model.TagModels.Tag;
+import com.movie_app.movie_app.entity.TagModels.Tag;
 import com.movie_app.movie_app.repository.Tag.TagRepository;
 import com.movie_app.movie_app.service.Tag.TagService;
 

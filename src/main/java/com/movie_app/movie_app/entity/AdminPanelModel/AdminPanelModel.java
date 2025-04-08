@@ -1,4 +1,4 @@
-package com.movie_app.movie_app.model.AdminPanelModel;
+package com.movie_app.movie_app.entity.AdminPanelModel;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

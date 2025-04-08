@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Map;
 import com.movie_app.movie_app.DTO.User.UserDTO;
+import com.movie_app.movie_app.entity.WatchOptionModels.WatchOption;
 import com.movie_app.movie_app.message.ReturnMessageFromApi;
-import com.movie_app.movie_app.model.WatchOptionModels.WatchOption;
 import com.movie_app.movie_app.service.WatchOption.WatchOptionService;
 
 import jakarta.persistence.EntityExistsException;

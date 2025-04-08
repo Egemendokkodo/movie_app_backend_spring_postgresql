@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.movie_app.movie_app.DTO.Movie.DeleteMovieRequest;
 import com.movie_app.movie_app.DTO.Movie.MovieDTO;
+import com.movie_app.movie_app.entity.MovieModels.Movie;
 import com.movie_app.movie_app.message.ReturnMessageFromApi;
-import com.movie_app.movie_app.model.MovieModels.Movie;
 import com.movie_app.movie_app.service.Movie.MovieService;
 
 @RestController
@@ -148,9 +148,9 @@ public class MovieController {
         boolean incremented = movieService.incrementMovieWatchCount(userId, movieId);
         
         if (incremented) {
-            return ResponseEntity.ok(true); // HTTP 200 OK ve true değeri
+            return ResponseEntity.ok(true); 
         } else {
-            return ResponseEntity.ok(false); // HTTP 200 OK ve false değeri
+            return ResponseEntity.ok(false); 
         }
     }
     

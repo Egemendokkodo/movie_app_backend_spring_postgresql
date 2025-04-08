@@ -4,7 +4,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
 import com.movie_app.movie_app.DTO.AdminPanel.LoginAdminDTO;
-import com.movie_app.movie_app.model.AdminPanelModel.AdminPanelModel;
+import com.movie_app.movie_app.entity.AdminPanelModel.AdminPanelModel;
 import com.movie_app.movie_app.repository.AdminPanel.AdminPanelRepository;
 import com.movie_app.movie_app.service.AdminPanel.AdminPanelService;
 import com.movie_app.movie_app.utils.UserRegistrationValidator;

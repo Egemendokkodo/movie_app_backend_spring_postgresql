@@ -15,8 +15,8 @@ import java.util.Map;
 
 import com.movie_app.movie_app.DTO.User.LoginUserDTO;
 import com.movie_app.movie_app.DTO.User.UserDTO;
+import com.movie_app.movie_app.entity.User.User;
 import com.movie_app.movie_app.message.ReturnMessageFromApi;
-import com.movie_app.movie_app.model.User.User;
 import com.movie_app.movie_app.service.User.UserService;
 
 import jakarta.persistence.EntityExistsException;

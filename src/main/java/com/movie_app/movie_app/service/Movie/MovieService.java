@@ -7,9 +7,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 
 import com.movie_app.movie_app.DTO.Movie.MovieDTO;
-import com.movie_app.movie_app.model.MovieModels.Movie;
-import com.movie_app.movie_app.model.TagModels.Tag;
-import com.movie_app.movie_app.model.WatchOptionModels.WatchOption;
+import com.movie_app.movie_app.entity.MovieModels.Movie;
+import com.movie_app.movie_app.entity.TagModels.Tag;
+import com.movie_app.movie_app.entity.WatchOptionModels.WatchOption;
 
 public interface MovieService {
      Page<Movie> getAllMovies(int page, int size);

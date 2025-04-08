@@ -1,4 +1,4 @@
-package com.movie_app.movie_app.model.User;
+package com.movie_app.movie_app.entity.User;
 
 
 import org.hibernate.mapping.List;

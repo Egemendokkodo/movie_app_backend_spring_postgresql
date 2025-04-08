@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.movie_app.movie_app.DTO.Movie.TagAddDTO;
+import com.movie_app.movie_app.entity.TagModels.Tag;
 import com.movie_app.movie_app.message.ReturnMessageFromApi;
-import com.movie_app.movie_app.model.TagModels.Tag;
 import com.movie_app.movie_app.service.Tag.TagService;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PostMapping;

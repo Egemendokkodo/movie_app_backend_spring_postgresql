@@ -3,7 +3,7 @@ package com.movie_app.movie_app.utils;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import com.movie_app.movie_app.model.WatchOptionModels.WatchOption;
+import com.movie_app.movie_app.entity.WatchOptionModels.WatchOption;
 import com.movie_app.movie_app.repository.WatchOptions.WatchOptionRepository;
 
 /* @Component

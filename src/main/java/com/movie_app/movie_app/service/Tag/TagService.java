@@ -2,8 +2,7 @@ package com.movie_app.movie_app.service.Tag;
 
 import java.util.List;
 
-
-import com.movie_app.movie_app.model.TagModels.Tag;
+import com.movie_app.movie_app.entity.TagModels.Tag;
 
 public interface TagService {
     List<Tag> getAllTags();

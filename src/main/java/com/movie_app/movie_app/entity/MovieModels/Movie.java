@@ -1,11 +1,11 @@
-package com.movie_app.movie_app.model.MovieModels;
+package com.movie_app.movie_app.entity.MovieModels;
 
 import jakarta.persistence.*;
 import lombok.Data;
 import java.util.List;
 
-import com.movie_app.movie_app.model.TagModels.Tag;
-import com.movie_app.movie_app.model.WatchOptionModels.WatchOption;
+import com.movie_app.movie_app.entity.TagModels.Tag;
+import com.movie_app.movie_app.entity.WatchOptionModels.WatchOption;
 import com.movie_app.movie_app.utils.MovieTypeEnum;
 
 

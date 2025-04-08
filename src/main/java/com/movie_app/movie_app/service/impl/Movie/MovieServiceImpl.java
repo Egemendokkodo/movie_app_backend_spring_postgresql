@@ -14,13 +14,13 @@ import org.springframework.stereotype.Service;
 import com.movie_app.movie_app.DTO.Movie.MovieDTO;
 import com.movie_app.movie_app.DTO.Movie.TagDTO;
 import com.movie_app.movie_app.DTO.Movie.WatchOptionDTO;
+import com.movie_app.movie_app.entity.MovieModels.Movie;
+import com.movie_app.movie_app.entity.MovieModels.MovieDetails;
+import com.movie_app.movie_app.entity.MovieModels.UserWatchHistory;
+import com.movie_app.movie_app.entity.TagModels.Tag;
+import com.movie_app.movie_app.entity.WatchOptionModels.WatchOption;
 import com.movie_app.movie_app.exception.TagNotFoundException;
 import com.movie_app.movie_app.exception.WatchOptionNotFoundException;
-import com.movie_app.movie_app.model.MovieModels.Movie;
-import com.movie_app.movie_app.model.MovieModels.MovieDetails;
-import com.movie_app.movie_app.model.MovieModels.UserWatchHistory;
-import com.movie_app.movie_app.model.TagModels.Tag;
-import com.movie_app.movie_app.model.WatchOptionModels.WatchOption;
 import com.movie_app.movie_app.repository.Movie.MovieDetailsRepository;
 import com.movie_app.movie_app.repository.Movie.MovieRepository;
 import com.movie_app.movie_app.repository.Movie.UserWatchHistoryRepository;
@@ -214,26 +214,26 @@ public Page<Movie> getMoviesByTagId(List<Integer> tagIds, int page, int size) {
     @Override
     @Transactional
     public boolean incrementMovieWatchCount(Long userId, Long movieId) {
-        // Kullanıcının bu filmi daha önce izleyip izlemediğini kontrol et
+       
         boolean hasWatchedBefore = userWatchHistoryRepository.existsByUserIdAndMovieId(userId, movieId);
         
         if (!hasWatchedBefore) {
-            // Filmi detaylarını bul
+            
             MovieDetails movieDetails = movieDetailsRepository.findById(movieId)
                 .orElseThrow(() -> new RuntimeException("Film bulunamadı: " + movieId));
             
-            // İzlenme sayısını artır
+            
             movieDetails.setTotalWatched(movieDetails.getTotalWatched() + 1);
             movieDetailsRepository.save(movieDetails);
             
-            // Kullanıcı izleme kaydını ekle
+          
             UserWatchHistory watchHistory = new UserWatchHistory(userId, movieId);
             userWatchHistoryRepository.save(watchHistory);
             
             return true;
         }
         
-        return false; // Daha önce izlenmiş, sayaç artırılmadı
+        return false; 
     }
 
 }

@@ -2,7 +2,7 @@ package com.movie_app.movie_app.DTO.Movie;
 
 import java.util.List;
 
-import com.movie_app.movie_app.model.MovieModels.MovieDetails;
+import com.movie_app.movie_app.entity.MovieModels.MovieDetails;
 import com.movie_app.movie_app.utils.MovieTypeEnum;
 
 import lombok.Data;

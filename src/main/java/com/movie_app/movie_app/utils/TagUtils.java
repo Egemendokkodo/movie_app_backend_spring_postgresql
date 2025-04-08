@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.movie_app.movie_app.model.TagModels.Tag;
+import com.movie_app.movie_app.entity.TagModels.Tag;
 import com.movie_app.movie_app.repository.Tag.TagRepository;
 
 import jakarta.annotation.PostConstruct;

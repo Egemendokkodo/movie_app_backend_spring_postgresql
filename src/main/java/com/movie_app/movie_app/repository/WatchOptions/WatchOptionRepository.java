@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.movie_app.movie_app.model.WatchOptionModels.WatchOption;
+import com.movie_app.movie_app.entity.WatchOptionModels.WatchOption;
 
 @Repository
 public interface WatchOptionRepository extends JpaRepository<WatchOption, Integer> {
