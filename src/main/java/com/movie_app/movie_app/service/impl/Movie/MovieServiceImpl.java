@@ -236,4 +236,10 @@ public Page<Movie> getMoviesByTagId(List<Integer> tagIds, int page, int size) {
         return false; 
     }
 
-}
+    @Override
+    public Page<Movie> searchMovies(String query, org.springframework.data.domain.Pageable pageable) {
+     
+        return movieRepository.findByNameContainingIgnoreCase(query, pageable);
+    }
+  
+}   

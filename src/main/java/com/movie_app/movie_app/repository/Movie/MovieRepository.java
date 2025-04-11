@@ -19,4 +19,5 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
     @Query("SELECT m FROM Movie m WHERE m.movieReleaseYear = :year")
     Page<Movie> findMoviesByYear(@Param("year") int year, Pageable pageable);
     
-}
+    Page<Movie> findByNameContainingIgnoreCase(String name, Pageable pageable);
+}   

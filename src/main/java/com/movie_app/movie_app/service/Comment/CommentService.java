@@ -10,7 +10,8 @@ public interface CommentService {
      public Comment addComment(CommentRequestDTO dto);
      public List<CommentResponseDTO> getCommentsForMovie(Long movieId);
      public CommentResponseDTO convertToDTO(Comment comment);
-
+     void likeComment(Long commentId, String username);
+     void dislikeComment(Long commentId, String username);
 
 
 }

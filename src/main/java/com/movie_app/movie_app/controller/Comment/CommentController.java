@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.movie_app.movie_app.DTO.Comment.CommentRequestDTO;
@@ -46,4 +47,17 @@ public class CommentController {
     public ResponseEntity<List<CommentResponseDTO>> getComments(@PathVariable Long movieId) {
         return ResponseEntity.ok(commentService.getCommentsForMovie(movieId));
     }
+
+    @PostMapping("/{commentId}/like")
+    public ResponseEntity<Void> likeComment(@PathVariable Long commentId, @RequestParam String username) {
+        commentService.likeComment(commentId, username);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/{commentId}/dislike")
+    public ResponseEntity<Void> dislikeComment(@PathVariable Long commentId, @RequestParam String username) {
+        commentService.dislikeComment(commentId, username);
+        return ResponseEntity.ok().build();
+    }
+
 }

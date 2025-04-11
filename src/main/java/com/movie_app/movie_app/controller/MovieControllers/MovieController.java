@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -127,33 +128,48 @@ public class MovieController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "0") int size) {
         try {
-            Page<Movie> movies= movieService.getMoviesByYear(page, size, year);
+            Page<Movie> movies = movieService.getMoviesByYear(page, size, year);
             Map<String, Object> response = new HashMap<>();
-        response.put("movies", movies.getContent()); // Filmler
-        response.put("currentPage", movies.getNumber()); // Mevcut sayfa
-        response.put("totalItems", movies.getTotalElements()); // Toplam film sayısı
-        response.put("totalPages", movies.getTotalPages()); // Toplam sayfa sayısı
+            response.put("movies", movies.getContent()); // Filmler
+            response.put("currentPage", movies.getNumber()); // Mevcut sayfa
+            response.put("totalItems", movies.getTotalElements()); // Toplam film sayısı
+            response.put("totalPages", movies.getTotalPages()); // Toplam sayfa sayısı
             return ReturnMessageFromApi.returnMessageOnSuccess(true, "Successfully fetched movies",
-                    HttpStatus.OK,response);
+                    HttpStatus.OK, response);
         } catch (Exception e) {
             return ReturnMessageFromApi.returnMessageOnError(false, "Failed to fetch movies by year",
-            HttpStatus.BAD_REQUEST);
+                    HttpStatus.BAD_REQUEST);
         }
     }
+
     @PostMapping("/{movieId}/watch")
     public ResponseEntity<Boolean> watchMovie(
             @PathVariable Long movieId,
             @RequestParam Long userId) {
-        
+
         boolean incremented = movieService.incrementMovieWatchCount(userId, movieId);
-        
+
         if (incremented) {
-            return ResponseEntity.ok(true); 
+            return ResponseEntity.ok(true);
         } else {
-            return ResponseEntity.ok(false); 
+            return ResponseEntity.ok(false);
         }
     }
-    
+
+    @GetMapping("/search")
+    public ResponseEntity<Map<String, Object>> searchMovies(
+            @RequestParam String query,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        PageRequest pageable = PageRequest.of(page, size);
+        Page<Movie> movies = movieService.searchMovies(query, pageable);
+        Map<String, Object> response = new HashMap<>();
+        response.put("movies", movies.getContent());
+        response.put("currentPage", movies.getNumber());
+        response.put("totalItems", movies.getTotalElements());
+        response.put("totalPages", movies.getTotalPages());
+        return ReturnMessageFromApi.returnMessageOnSuccess(true, "Movies fetched successfully.", HttpStatus.OK,
+                response);
+    }
+
 }
-
-

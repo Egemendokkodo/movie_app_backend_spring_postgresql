@@ -3,7 +3,9 @@ package com.movie_app.movie_app.service.Movie;
 import java.util.List;
 import java.util.Map;
 
+
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 
 import com.movie_app.movie_app.DTO.Movie.MovieDTO;
@@ -22,5 +24,5 @@ public interface MovieService {
     Boolean deleteMovieById(Long movieId);
     Boolean updateMovie(Long movieId, MovieDTO movieDTO);
     boolean incrementMovieWatchCount(Long userId, Long movieId);
-
+    Page<Movie> searchMovies(String query, Pageable pageable);
 }

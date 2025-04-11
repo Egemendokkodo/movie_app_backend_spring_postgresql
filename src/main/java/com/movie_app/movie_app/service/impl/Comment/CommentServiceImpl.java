@@ -13,10 +13,12 @@ import com.movie_app.movie_app.entity.MovieModels.Movie;
 import com.movie_app.movie_app.repository.Comment.CommentRepository;
 import com.movie_app.movie_app.repository.Movie.MovieRepository;
 import com.movie_app.movie_app.service.Comment.CommentService;
+
+import jakarta.transaction.Transactional;
 @Service
 public class CommentServiceImpl implements CommentService {
 
-     @Autowired
+    @Autowired
     private CommentRepository commentRepository;
 
     @Autowired
@@ -43,7 +45,7 @@ public class CommentServiceImpl implements CommentService {
     
         Comment saved = commentRepository.save(comment);
     
-        // Yorum sayısını güncelle
+       
         long count = commentRepository.countByMovie_MovieId(dto.getMovieId());
         movie.setMovieTotalCommentCount(count);
         movieRepository.save(movie);
@@ -69,7 +71,7 @@ public class CommentServiceImpl implements CommentService {
         dto.setContainsSpoiler(comment.isContainsSpoiler());
         dto.setLikeCount(comment.getLikeCount());
         dto.setDislikeCount(comment.getDislikeCount());
-        dto.setCreatedAt(comment.getCreatedAt());  // Burada createdAt değeri atanmalı
+        dto.setCreatedAt(comment.getCreatedAt());  
     
         List<CommentResponseDTO> replies = comment.getReplies().stream()
                 .map(this::convertToDTO)
@@ -77,6 +79,51 @@ public class CommentServiceImpl implements CommentService {
         dto.setReplies(replies);
     
         return dto;
+    }
+
+
+    public void likeComment(Long commentId, String username) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new RuntimeException("Yorum bulunamadı"));
+
+        if (comment.getLikedBy().contains(username)) {
+  
+            comment.getLikedBy().remove(username);
+            comment.setLikeCount(comment.getLikeCount() - 1);
+        } else {
+            
+            comment.getLikedBy().add(username);
+            comment.setLikeCount(comment.getLikeCount() + 1);
+    
+            if (comment.getDislikedBy().contains(username)) {
+                comment.getDislikedBy().remove(username);
+                comment.setDislikeCount(comment.getDislikeCount() - 1);
+            }
+        }
+
+        commentRepository.save(comment);
+    }
+
+    public void dislikeComment(Long commentId, String username) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new RuntimeException("Yorum bulunamadı"));
+
+        if (comment.getDislikedBy().contains(username)) {
+           
+            comment.getDislikedBy().remove(username);
+            comment.setDislikeCount(comment.getDislikeCount() - 1);
+        } else {
+        
+            comment.getDislikedBy().add(username);
+            comment.setDislikeCount(comment.getDislikeCount() + 1);
+           
+            if (comment.getLikedBy().contains(username)) {
+                comment.getLikedBy().remove(username);
+                comment.setLikeCount(comment.getLikeCount() - 1);
+            }
+        }
+
+        commentRepository.save(comment);
     }
     
     

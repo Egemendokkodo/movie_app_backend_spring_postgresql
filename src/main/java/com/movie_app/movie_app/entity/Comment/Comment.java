@@ -2,13 +2,16 @@ package com.movie_app.movie_app.entity.Comment;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.movie_app.movie_app.entity.MovieModels.Movie;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -33,7 +36,7 @@ public class Comment {
   private int dislikeCount = 0;
 
   @Column(nullable = false, updatable = false)
-  private LocalDateTime createdAt = LocalDateTime.now(); 
+  private LocalDateTime createdAt = LocalDateTime.now();
 
   @ManyToOne
   @JoinColumn(name = "movie_id")
@@ -48,5 +51,11 @@ public class Comment {
   @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
   @JsonIgnore
   private List<Comment> replies = new ArrayList<>();
+
+  @ElementCollection
+  private Set<String> likedBy = new HashSet<>();
+
+  @ElementCollection
+  private Set<String> dislikedBy = new HashSet<>();
 
 }
