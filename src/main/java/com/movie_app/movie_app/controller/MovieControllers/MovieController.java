@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.movie_app.movie_app.DTO.Movie.DeleteMovieRequest;
+import com.movie_app.movie_app.DTO.Movie.DetailedSearchDTO;
 import com.movie_app.movie_app.DTO.Movie.MovieDTO;
 import com.movie_app.movie_app.entity.MovieModels.Movie;
 import com.movie_app.movie_app.message.ReturnMessageFromApi;
@@ -110,7 +111,7 @@ public class MovieController {
     }
 
     @PostMapping("/delete-movie-by-id")
-    public ResponseEntity<Map<String, Object>> postMethodName(@RequestBody DeleteMovieRequest request) {
+    public ResponseEntity<Map<String, Object>> deleteMovieById(@RequestBody DeleteMovieRequest request) {
 
         final Boolean success = movieService.deleteMovieById(request.getId());
         if (Boolean.TRUE.equals(success)) {
@@ -170,6 +171,25 @@ public class MovieController {
         response.put("totalPages", movies.getTotalPages());
         return ReturnMessageFromApi.returnMessageOnSuccess(true, "Movies fetched successfully.", HttpStatus.OK,
                 response);
+    }
+
+    @PostMapping("/detailed-search")
+    public ResponseEntity<Map<String, Object>>  detailedSearch(@RequestBody DetailedSearchDTO detailedSearchDTO,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        PageRequest pageable = PageRequest.of(page, size);
+        Map<String, Object> response = new HashMap<>();
+        Page<Movie> movies = movieService.detailedMovieSearch(detailedSearchDTO, pageable);
+        response.put("movies", movies.getContent());
+        response.put("currentPage", movies.getNumber());
+        response.put("totalItems", movies.getTotalElements());
+        response.put("totalPages", movies.getTotalPages());
+
+
+
+
+        return ReturnMessageFromApi.returnMessageOnSuccess(true, "Movies fetched successfully.", HttpStatus.OK,
+        response);
     }
 
 }

@@ -6,11 +6,15 @@ import java.util.stream.Collectors;
 
 import java.util.Optional;
 
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
+
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+
+
+
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import com.movie_app.movie_app.DTO.Movie.DetailedSearchDTO;
 import com.movie_app.movie_app.DTO.Movie.MovieDTO;
 import com.movie_app.movie_app.DTO.Movie.TagDTO;
 import com.movie_app.movie_app.DTO.Movie.WatchOptionDTO;
@@ -27,6 +31,12 @@ import com.movie_app.movie_app.repository.Movie.UserWatchHistoryRepository;
 import com.movie_app.movie_app.repository.Tag.TagRepository;
 import com.movie_app.movie_app.repository.WatchOptions.WatchOptionRepository;
 import com.movie_app.movie_app.service.Movie.MovieService;
+import com.movie_app.movie_app.utils.MovieSpecification;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -241,5 +251,19 @@ public Page<Movie> getMoviesByTagId(List<Integer> tagIds, int page, int size) {
      
         return movieRepository.findByNameContainingIgnoreCase(query, pageable);
     }
+
+    @Override
+    public Page<Movie> detailedMovieSearch(DetailedSearchDTO detailedSearchDTO,
+            org.springframework.data.domain.Pageable pageable) {
+                Specification<Movie> spec = MovieSpecification.filter(detailedSearchDTO);
+
+                Sort sort = MovieSpecification.getSortByFilter(detailedSearchDTO.getSearchFilter());
+                Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort); // Type mismatch: cannot convert from PageRequest to SpringDataWebProperties.Pageable
+            
+                return movieRepository.findAll(spec, sortedPageable); // The method findAll(Specification<Movie>, Pageable) in the type JpaSpecificationExecutor<Movie> is not applicable for the arguments (Specification<Movie>, SpringDataWebProperties.Pageable)
+    }
+
+ 
+
   
 }   

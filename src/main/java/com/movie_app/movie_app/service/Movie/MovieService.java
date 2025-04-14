@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 
+import com.movie_app.movie_app.DTO.Movie.DetailedSearchDTO;
 import com.movie_app.movie_app.DTO.Movie.MovieDTO;
 import com.movie_app.movie_app.entity.MovieModels.Movie;
 import com.movie_app.movie_app.entity.TagModels.Tag;
@@ -25,4 +26,5 @@ public interface MovieService {
     Boolean updateMovie(Long movieId, MovieDTO movieDTO);
     boolean incrementMovieWatchCount(Long userId, Long movieId);
     Page<Movie> searchMovies(String query, Pageable pageable);
+    Page<Movie> detailedMovieSearch(DetailedSearchDTO detailedSearchDTO, Pageable pageable);
 }
