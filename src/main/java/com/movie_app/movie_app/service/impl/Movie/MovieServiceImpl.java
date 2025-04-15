@@ -258,10 +258,9 @@ public Page<Movie> getMoviesByTagId(List<Integer> tagIds, int page, int size) {
                 Specification<Movie> spec = MovieSpecification.filter(detailedSearchDTO);
 
                 Sort sort = MovieSpecification.getSortByFilter(detailedSearchDTO.getSearchFilter());
-                Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort); // Type mismatch: cannot convert from PageRequest to SpringDataWebProperties.Pageable
-            
-                return movieRepository.findAll(spec, sortedPageable); // The method findAll(Specification<Movie>, Pageable) in the type JpaSpecificationExecutor<Movie> is not applicable for the arguments (Specification<Movie>, SpringDataWebProperties.Pageable)
-    }
+                Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort); 
+                return movieRepository.findAll(spec, sortedPageable); 
+               }
 
  
 
