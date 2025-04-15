@@ -31,7 +31,11 @@ public class MovieSpecification {
             }
 
             if (dto.getImdbScore() != null) {
-                predicates.add(cb.greaterThanOrEqualTo(root.get("movieImdbRate"), dto.getImdbScore()));
+                if(dto.getImdbScore()==5){
+                    predicates.add(cb.lessThanOrEqualTo(root.get("movieImdbRate"), dto.getImdbScore()));
+                }else{
+                    predicates.add(cb.greaterThanOrEqualTo(root.get("movieImdbRate"), dto.getImdbScore()));
+                }
             }
 
             if (dto.getTagIds() != null && !dto.getTagIds().isEmpty()) {
