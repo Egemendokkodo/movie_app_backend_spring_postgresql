@@ -9,6 +9,10 @@
 </p>
 
 
+<h2 align="center">
+ ⚠️ <strong>Important:</strong> This is a Backend for a Full Stack project. To benefit more from this project, <a href="https://github.com/Egemendokkodo/movie-app-react">check the frontend of this project</a> to see the UI for this project.
+  <br></br></h2>
+</h2>
 
 
 
