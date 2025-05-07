@@ -8,10 +8,6 @@
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" alt="PostgreSQL" width="50" height="50"/>
 </p>
 
-<h2 align="center">
- ⚠️ <strong>Important:</strong> This is a BACKEND for a Full Stack project. To install and run this project properly, please check <a href="https://github.com/Egemendokkodo/movie_app_backend_spring_postgresql">this project's backend repository</a> first.
-  <br></br></h2>
-</h2>
 
 
 
@@ -21,7 +17,8 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 ## Table of Contents
 
-- [Introduction](#introduction) 
+- [Introduction](#introduction)
+- [Dependencies](#dependencies)
 - [Features](#features)
 - [How to install and run](#how-to-install-and-run)
   
@@ -35,7 +32,7 @@
 This project is  a Backend of a fullstack project. 
 
 <p>
-  This project is a <strong>backend</strong> of the popular movie streaming website <em>HDFilmCehennemi</em>. It was built solely for <strong>educational and personal learning purposes</strong>, with no intention of distributing or linking to copyrighted content.
+  This project is a <strong>backend</strong>for a movie streaming website. It was built solely for <strong>educational and personal learning purposes</strong>, with no intention of distributing or linking to copyrighted content.
 </p>
 
 <p>
@@ -48,12 +45,17 @@ This project is  a Backend of a fullstack project.
 </ul>
 
 <p>
-  This clone focuses purely on the <strong>Backend experience</strong>, simulating the look and feel of a real movie streaming site — without any backend or streaming functionality.
+  This clone focuses purely on the <strong>Backend experience</strong>, simulating the look and feel of a real movie streaming site — without streaming functionality.
 </p>
 
-<blockquote>
-  ⚠️ <strong>Disclaimer:</strong> This is a UI-only project. It does not host, stream, or promote any pirated or copyrighted content.
-</blockquote>
+
+## Dependencies
+
+* JPA
+* Lombok
+* Postgresql
+* JWT
+* Thymeleaf
 
 ## How to install and run
 
@@ -105,13 +107,60 @@ logging.level.org.springframework.security=DEBUG
 <p>
   ✅ <em>Make sure the database name matches the one you created in Step 1.</em>
 </p>
+<hr>
+<h3>📦 Step 3: Add Example Data to Your Database</h3>
+
+<p>
+  You can populate your PostgreSQL database with example data using the 
+  <code>movie_db_example_data.backup</code> file included in this project.
+</p>
+
+<p>
+  Follow these steps to import the backup:
+</p>
+
+<ol>
+  <li>Open <strong>pgAdmin</strong> and connect to your PostgreSQL server.</li>
+  <li>Right-click on your target database (e.g. <code>Movie Website</code>) and select <strong>Restore</strong>.</li>
+  <li>In the dialog box:
+    <ul>
+      <li>Set <strong>Format</strong> to <code>Custom or tar</code>.</li>
+      <li>For <strong>Filename</strong>, choose the <code>movie_db_example_data.backup</code> file from your local machine.</li>
+    </ul>
+  </li>
+  <li>Click <strong>Restore</strong> to begin the import process.</li>
+</ol>
+
+<p>
+  ✅ Once the restore is complete, your database will be populated with sample movies, tags, watch options, and more.
+</p>
+<hr>
+<h3>📦 (OPTIONAL) Step 4: Import Postman Endpoints into Postman App</h3>
+
+<p>
+  For a faster and more efficient development experience, you can import ready-to-use API endpoints into your Postman app using the 
+  <code>Movie App.postman_collection.json</code> file included in this project.
+</p>
+
+<p>
+  Follow these steps:
+</p>
+
+<ol>
+  <li>Open your <strong>Postman</strong> app.</li>
+  <li>Click on the <strong>Import</strong> button (usually top-left corner).</li>
+  <li>In the dialog that appears, choose the <strong>File</strong> tab.</li>
+  <li>Select the <code>Movie App.postman_collection.json</code> file from your local machine.</li>
+  <li>Click <strong>Import</strong>.</li>
+</ol>
+
+<p>
+  ✅ The collection will now appear in your Postman workspace, with all available endpoints (GET, POST, PUT, DELETE, etc.) ready to test.
+</p>
+
 
 
 ## Features
-
-* Reusable template
-* Satisfying and Modern UI
-* A collection of very nice UX features like hover inspection on movie, featured movies, sliders etc..
-* Detailed movie search. With this option, you can cherry-pick the movie you desire.
-* <strong>Admin Dashboard!</strong>
+![11](https://github.com/user-attachments/assets/40d18242-0a72-46f5-8212-ed1c738c99ee) <br>
+![12](https://github.com/user-attachments/assets/5a3948c0-d360-45e1-b713-d6e1e655f49f)
 
