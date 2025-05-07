@@ -1,0 +1,460 @@
+{
+	"info": {
+		"_postman_id": "681da25d-da8b-4a6f-a2d3-c2e490513c00",
+		"name": "Movie App",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "38650412"
+	},
+	"item": [
+		{
+			"name": "Movies",
+			"item": [
+				{
+					"name": "getAllMovies",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/movie/get-all-movies?page=0&size=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"movie",
+								"get-all-movies"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getMoviesIdByTagId",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[13]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/movie/get-movies-by-tag-id?page=0&size=20",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"movie",
+								"get-movies-by-tag-id"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "20"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addMovie",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Godzilla x Kong: The New Empire\",\r\n    \"movieImage\": \"https://www.hdfilmcehennemi.movie/images/list/poster/godzilla-x-kong-the-new-empire.webp\",\r\n    \"movieReleaseYear\": 2024,\r\n    \"movieImdbRate\": 6.1,\r\n    \"type\": \"MOVIE\",\r\n    \"tags\": [\r\n        {\r\n            \"tagId\": 2,\r\n            \"name\": \"Action\"\r\n        },\r\n        {\r\n            \"tagId\": 15,\r\n            \"name\": \"Adventure\"\r\n        },\r\n        {\r\n            \"tagId\": 22,\r\n            \"name\": \"Science Fiction\"\r\n        },\r\n        {\r\n            \"tagId\": 31,\r\n            \"name\": \"Editor's Choice\"\r\n        }\r\n    ],\r\n    \"watchOptions\": [\r\n        {\"name\": \"Türkçe Dublaj\",\"watchOptionId\":1},\r\n        {\"name\": \"İngilizce Altyazılı\",\"watchOptionId\":2}\r\n    ],\r\n    \"movieDetails\": {\r\n        \"description\": \"Godzilla x Kong: The New Empire, kudretli Kong ve korkunç Godzilla, insan dünyasında gizlenen ve hem kendi türlerinin hem de insanlığın varoluşunu tehdit eden devasa ölümcül bir tehdide karşı birlikte savaşmak zorundadır.\",\r\n        \"movieLengthInMins\": 110,\r\n        \"movieReleaseCountry\": \"ABD\",\r\n        \"totalWatched\": 1711510,\r\n        \"websiteRating\": 0,\r\n        \"trailer\": \"https://trailer.url\"\r\n    }\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/movie/add-movie"
+					},
+					"response": []
+				},
+				{
+					"name": "updateMovie",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"watchOptions\": [\r\n            {\r\n                \"watchOptionId\": 123123,\r\n                \"name\": \"Türkçe Dublaj\"\r\n            }\r\n        ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/movie/update/5"
+					},
+					"response": []
+				},
+				{
+					"name": "getMovieById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/api/movie/get-movie-by-id/5"
+					},
+					"response": []
+				},
+				{
+					"name": "deleteMovieById",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\":19\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/movie/delete-movie-by-id"
+					},
+					"response": []
+				},
+				{
+					"name": "getMoviesByYear",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/movie/get-movie-by-year/2022?page=0&size=20",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"movie",
+								"get-movie-by-year",
+								"2022"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "20"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "incrementMovieWatchCount",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "searchMovieByName",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "detailedSearch",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tags",
+			"item": [
+				{
+					"name": "getAllTags",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/tag/get-all-tags"
+					},
+					"response": []
+				},
+				{
+					"name": "getTagByTagId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/api/tag/get-tag-by-tag-id/6"
+					},
+					"response": []
+				},
+				{
+					"name": "addTag",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"Öne Çıkanlar\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/tag/add-tag"
+					},
+					"response": []
+				},
+				{
+					"name": "deleteTag",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "31",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/tag/delete-tag-by-id"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"johndoe6@example.com\",\r\n  \"password\": \"securePassword123\",\r\n  \"rePassword\": \"securePassword123\",\r\n  \"name\": \"John\",\r\n  \"surname\": \"Doe\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/auth/register"
+					},
+					"response": []
+				},
+				{
+					"name": "deleteUser",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/api/auth/delete-user/4"
+					},
+					"response": []
+				},
+				{
+					"name": "loginUser",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"johndoe6@example.com\",\r\n  \"password\": \"securePassword123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/auth/login"
+					},
+					"response": []
+				},
+				{
+					"name": "getUserById",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/api/auth/get-user-by-id/5"
+					},
+					"response": []
+				},
+				{
+					"name": "addToWatchList",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "getUserWatchList",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "removeFromWatchList",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "isUserWatchedThisMovie",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Admin Panel",
+			"item": [
+				{
+					"name": "loginAdmin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userName\":\"admin\",\r\n    \"password\":\"password\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/movie-app/login-admin"
+					},
+					"response": []
+				},
+				{
+					"name": "registerAdmin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userName\":\"admin\",\r\n    \"password\":\"password\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/movie-app/register-admin"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Watch Option",
+			"item": [
+				{
+					"name": "getAllWatchOptions",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/api/watch-option/get-all-watch-options"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Comment",
+			"item": [
+				{
+					"name": "getMovieComments",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "addComment",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "replyComment",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
